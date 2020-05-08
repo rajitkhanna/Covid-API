@@ -1,26 +1,5 @@
 #!/usr/bin/env python3
 
-# RETRIEVING THE DATA
-# from pprint import pprint
-# myfile = open("Hospitalization_Data.csv")
-# myfile.readline()
-# data = [line.strip().split(',') for line in myfile.readlines() if line.strip().split(',')[0] != ""]
-# data = data[ : 24]
-# myfile.close()
-
-# myfile = open("Hospitalization_Data.csv")
-# myfile.readline()
-# line_count = 0
-# data_dict = {}
-# for line in myfile.readlines():
-#     if line_count == 23: break
-#     line = line.strip().split(',')
-#     if line[0] == '': continue
-#     data_dict[line[0].split(' (')[0]] = (float(line[1]), float(line[2]))
-#     line_count += 1
-# myfile.close()
-# pprint(data_dict)
-
 mapping = {
     '0–9 years': (0.01, 0.99),
     '10–19 years': (0.0408, 0.959),
