@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request
 from naive_bayes import mapping
 from naive_bayes import Naive_Bayes
-from secrets import api_key
+# from secrets import api_key
 
 app = Flask(__name__)
 
