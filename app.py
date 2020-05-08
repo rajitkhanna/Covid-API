@@ -4,6 +4,7 @@ from naive_bayes import Naive_Bayes
 # from secrets import api_key
 
 app = Flask(__name__)
+app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
 @app.route('/', methods=['GET'])
 @app.route('/params', methods=['GET'])
