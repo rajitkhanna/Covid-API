@@ -32,14 +32,14 @@ def age_fields():
 @app.route('/conditions', methods=['GET'])
 def query():
     query_parameters = request.args
-    assert(len(query_parameters)) == 1
+    assert(len(query_parameters) == 1)
     condition = query_parameters.get('condition').strip("\"")
     return jsonify({condition : mapping[condition]} if condition in mapping else dict())
 
 @app.route('/age', methods=['GET'])
 def query_age():
     query_parameters = request.args
-    assert(len(query_parameters)) == 1
+    assert(len(query_parameters) == 1)
     age = int(query_parameters.get('age'))
 
     if age >= 110:
@@ -88,14 +88,14 @@ def conditions():
 # TODO : HANDLE PUT, DELETE REQUESTS
 @app.route('/', methods=['POST'])
 def post():
-    # if request.is_json:
-    data = request.get_json() if request.is_json else request.get_data()
-    # else:
-    #     raise ValueError("Cannot parse data.")
-    assert(len(data)) == 2
+    if request.is_json:
+        data = request.get_json()
+    else:
+        return error(ValueError("Cannot parse data"))
+    assert(len(data) == 2)
     try:
-        age = data['age']
-        condition_list = data['conditions']
+        age = int(data['age'])
+        condition_list = list(data['conditions'])
     except KeyError:
         return jsonify(dict())
     nb = Naive_Bayes(age, condition_list)
