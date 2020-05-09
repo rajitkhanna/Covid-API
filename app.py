@@ -1,9 +1,11 @@
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 from naive_bayes import mapping
 from naive_bayes import Naive_Bayes
 # from secrets import api_key
 
 app = Flask(__name__)
+CORS(app)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
 @app.route('/', methods=['GET'])
@@ -86,10 +88,10 @@ def conditions():
 # TODO : HANDLE PUT, DELETE REQUESTS
 @app.route('/', methods=['POST'])
 def post():
-    if request.is_json:
-        data = request.get_json()
-    else:
-        raise ValueError("Cannot parse data.")
+    # if request.is_json:
+    data = request.get_json() if request.is_json else request.get_data()
+    # else:
+    #     raise ValueError("Cannot parse data.")
     assert(len(data)) == 2
     try:
         age = data['age']
