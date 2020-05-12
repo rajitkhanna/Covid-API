@@ -91,7 +91,7 @@ def post():
     if request.is_json:
         data = request.get_json()
     else:
-        return error(ValueError("Cannot parse data"))
+        return jsonify({'request' : request.get_data()})
     assert(len(data) == 2)
     try:
         age = int(data['age'])
