@@ -53,6 +53,7 @@ class Naive_Bayes:
         else: self.condition.append('One or more conditions')
         self.age_helper()
         self.state_manager()
+        print(self.condition)
 
     def get_probability(self):
         probability = self.get_prior_prob(True) * self.get_posterior_prob(True) / self.get_evidence()
@@ -94,5 +95,5 @@ class Naive_Bayes:
     def state_manager(self):
         if self.state not in mapping:
             return False
-        self.condition_list.append(state)
+        self.condition.append(self.state)
         return True
