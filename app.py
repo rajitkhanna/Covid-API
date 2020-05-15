@@ -8,12 +8,12 @@ app = Flask(__name__)
 CORS(app)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
-@app.route('/', methods=['GET'])
-@app.route('/params', methods=['GET'])
+@app.route('/api/', methods=['GET'])
+@app.route('/api/params', methods=['GET'])
 def home():
     return jsonify(mapping)
 
-@app.route('/ages/all', methods=['GET'])
+@app.route('/api/ages/all', methods=['GET'])
 def age_fields():
     return jsonify(
         {
@@ -29,14 +29,14 @@ def age_fields():
         }
     )
 
-@app.route('/conditions', methods=['GET'])
+@app.route('/api/conditions', methods=['GET'])
 def query():
     query_parameters = request.args
     assert(len(query_parameters) == 1)
     condition = query_parameters.get('condition').strip("\"")
     return jsonify({condition : mapping[condition]} if condition in mapping else dict())
 
-@app.route('/age', methods=['GET'])
+@app.route('/api/age', methods=['GET'])
 def query_age():
     query_parameters = request.args
     assert(len(query_parameters) == 1)
@@ -66,7 +66,7 @@ def query_age():
     return jsonify({condition : mapping[condition]})
 
 
-@app.route('/conditions/all', methods=['GET'])
+@app.route('/api/conditions/all', methods=['GET'])
 def conditions():
     return jsonify(
         {
@@ -86,19 +86,20 @@ def conditions():
     )
 
 # TODO : HANDLE PUT, DELETE REQUESTS
-@app.route('/', methods=['POST'])
+@app.route('/api', methods=['POST'])
 def post():
     if request.is_json:
         data = request.get_json()
     else:
         return jsonify({'request' : request.get_data()})
-    assert(len(data) == 2)
+    assert(len(data) == 3)
     try:
         age = int(data['age'])
         condition_list = list(data['conditions'])
+        state = str(data['state'])
     except KeyError:
         return jsonify(dict())
-    nb = Naive_Bayes(age, condition_list)
+    nb = Naive_Bayes(age, state, condition_list)
     return jsonify({'probability': nb.get_probability()})
 
 @app.errorhandler(404)

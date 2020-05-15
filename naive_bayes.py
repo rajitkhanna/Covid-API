@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from load_probability import ProbabilityManager
 
 mapping = {
     '0–9 years': (0.01, 0.99),
@@ -13,7 +14,6 @@ mapping = {
     'Chronic liver disease': (0.008, 0.005),
     'Chronic lung disease': (0.145, 0.071),
     'Chronic renal disease': (0.08, 0.01),
-    'Control': (0.836, 0.164),
     'Current smoker': (0.017, 0.012),
     'Former smoker': (0.042, 0.016),
     'Diabetes mellitus': (0.224, 0.064),
@@ -25,6 +25,9 @@ mapping = {
     'Pregnant': (0.035, 0.014),
     '≥80 years': (0.184, 0.816)
 }
+p = ProbabilityManager()
+mapping.update(p.get_control())
+mapping.update(p.get_statewide())
 
 condition_list = [
     'Cardiovascular disease',
@@ -41,13 +44,15 @@ condition_list = [
     ]
 
 class Naive_Bayes:
-    def __init__(self, age, condition_list = []):
+    def __init__(self, age, state, condition_list = []):
         self.age = age
         self.condition = condition_list
+        self.state = state
         if not self.condition:
             self.condition.append('None of the above conditions')
         else: self.condition.append('One or more conditions')
         self.age_helper()
+        self.state_manager()
 
     def get_probability(self):
         probability = self.get_prior_prob(True) * self.get_posterior_prob(True) / self.get_evidence()
@@ -85,3 +90,9 @@ class Naive_Bayes:
             self.condition.append('10–19 years')
         else:
             self.condition.append('0–9 years')
+        
+    def state_manager(self):
+        if self.state not in mapping:
+            return False
+        self.condition_list.append(state)
+        return True
